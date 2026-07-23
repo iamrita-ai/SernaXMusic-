@@ -77,6 +77,18 @@ ETA_STICKER = os.environ.get("ETA_STICKER", "")
 YT_COOKIES = os.environ.get("YT_COOKIES", "").strip()
 
 # ---------------------------------------------------------------------
+# Proxy — YouTube blocklists most datacenter IPs (Render/Railway/Heroku
+# included), so a proxy is often required for search/download to work.
+#
+#   PROXY_URL   -> single proxy, e.g. http://user:pass@host:port
+#   PROXY_LIST  -> comma-separated list of proxies to rotate through,
+#                  one is picked round-robin on every search/download.
+#                  PROXY_LIST overrides PROXY_URL if both are set.
+# ---------------------------------------------------------------------
+PROXY_URL = os.environ.get("PROXY_URL", "").strip()
+PROXY_LIST = [p.strip() for p in os.environ.get("PROXY_LIST", "").split(",") if p.strip()]
+
+# ---------------------------------------------------------------------
 # Misc
 # ---------------------------------------------------------------------
 _raw_support_chat = os.environ.get("SUPPORT_CHAT", "").strip()
