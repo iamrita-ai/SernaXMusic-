@@ -1,0 +1,19 @@
+# --- Telegram Bot API layer ---
+python-telegram-bot[job-queue]==22.8
+
+# --- MTProto client + Group Voice Chat streaming (needed because a Bot
+#     account can NEVER join a Voice Chat -- only a user account can) ---
+pyrogram==2.0.106
+tgcrypto==1.2.5
+py-tgcalls==2.1.4
+
+# --- Free "jugad" music source: search + download straight from YouTube ---
+yt-dlp>=2024.12.13
+
+# --- Database ---
+motor==3.6.0
+pymongo==4.9.2
+
+# --- Utils ---
+python-dotenv==1.0.1
+psutil==6.1.0
