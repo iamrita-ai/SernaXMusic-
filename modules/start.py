@@ -38,11 +38,17 @@ async def _register(update: Update):
 
 
 def _help_keyboard() -> InlineKeyboardMarkup:
-    rows = [[InlineKeyboardButton(cat, callback_data=f"help_{i}")]
+    # `style` needs PTB >= 22.7 and a Telegram client released after Feb 9,
+    # 2026 to actually render in color — older clients just show a plain
+    # button, so nothing breaks either way.
+    rows = [[InlineKeyboardButton(cat, callback_data=f"help_{i}", style="primary")]
             for i, cat in enumerate(HELP_CATEGORIES)]
-    rows.append([InlineKeyboardButton("➕ Add me to your group",
-                                       url=f"https://t.me/{BOT_USERNAME}?startgroup=true")])
-    rows.append([InlineKeyboardButton("🆘 Support Chat", url=SUPPORT_CHAT)])
+    rows.append([InlineKeyboardButton(
+        "➕ Add me to your group",
+        url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
+        style="success",
+    )])
+    rows.append([InlineKeyboardButton("🆘 Support Chat", url=SUPPORT_CHAT, style="primary")])
     return InlineKeyboardMarkup(rows)
 
 
@@ -85,7 +91,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     body = HELP_CATEGORIES[cat_name]
     text = f"<b>{cat_name}</b>\n\n<pre>{body}</pre>"
     back_kb = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("« Back", callback_data="help_back")]]
+        [[InlineKeyboardButton("« Back", callback_data="help_back", style="danger")]]
     )
     await query.edit_message_text(text, parse_mode=ParseMode.HTML, reply_markup=back_kb)
 
