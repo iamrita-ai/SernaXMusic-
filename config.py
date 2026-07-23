@@ -68,6 +68,15 @@ START_STICKER = os.environ.get("START_STICKER", "")
 ETA_STICKER = os.environ.get("ETA_STICKER", "")
 
 # ---------------------------------------------------------------------
+# YouTube cookies — cloud hosts (Render, etc.) get IP-blocked by YouTube
+# with "Sign in to confirm you're not a bot." Paste a Netscape-format
+# cookies.txt content here (export via a browser extension like
+# "Get cookies.txt LOCALLY" while logged into YouTube) to fix it.
+# Optional — bot works without it until YouTube starts blocking you.
+# ---------------------------------------------------------------------
+YT_COOKIES = os.environ.get("YT_COOKIES", "").strip()
+
+# ---------------------------------------------------------------------
 # Misc
 # ---------------------------------------------------------------------
 _raw_support_chat = os.environ.get("SUPPORT_CHAT", "").strip()

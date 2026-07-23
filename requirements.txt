@@ -8,7 +8,7 @@ tgcrypto==1.2.5
 py-tgcalls==2.2.11
 
 # --- Free "jugad" music source: search + download straight from YouTube ---
-yt-dlp>=2024.12.13
+yt-dlp
 
 # --- Database ---
 motor==3.6.0
