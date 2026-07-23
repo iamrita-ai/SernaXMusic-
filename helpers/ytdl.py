@@ -14,7 +14,22 @@ personal, fair-use, or licensed content.
 import asyncio
 import os
 import yt_dlp
-from config import DOWNLOADS_DIR
+from config import DOWNLOADS_DIR, YT_COOKIES
+
+COOKIES_PATH = os.path.join(DOWNLOADS_DIR, "cookies.txt")
+
+if YT_COOKIES:
+    with open(COOKIES_PATH, "w", encoding="utf-8") as f:
+        f.write(YT_COOKIES + "\n")
+
+_COMMON_OPTS = {
+    # "android" client usually isn't hit with the "Sign in to confirm
+    # you're not a bot" wall that cloud-host IPs get on the web client.
+    "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
+    "http_headers": {"User-Agent": "com.google.android.youtube/19.29.37"},
+}
+if YT_COOKIES:
+    _COMMON_OPTS["cookiefile"] = COOKIES_PATH
 
 YDL_SEARCH_OPTS = {
     "format": "bestaudio/best",
@@ -23,6 +38,7 @@ YDL_SEARCH_OPTS = {
     "no_warnings": True,
     "default_search": "ytsearch",
     "skip_download": True,
+    **_COMMON_OPTS,
 }
 
 YDL_DOWNLOAD_OPTS = {
@@ -38,14 +54,18 @@ YDL_DOWNLOAD_OPTS = {
             "preferredquality": "192",
         }
     ],
+    **_COMMON_OPTS,
 }
 
 
 def _search(query: str) -> dict | None:
-    with yt_dlp.YoutubeDL(YDL_SEARCH_OPTS) as ydl:
-        info = ydl.extract_info(f"ytsearch1:{query}", download=False)
-        entries = info.get("entries") or []
-        return entries[0] if entries else None
+    try:
+        with yt_dlp.YoutubeDL(YDL_SEARCH_OPTS) as ydl:
+            info = ydl.extract_info(f"ytsearch1:{query}", download=False)
+            entries = info.get("entries") or []
+            return entries[0] if entries else None
+    except yt_dlp.utils.DownloadError:
+        return None
 
 
 async def search_track(query: str) -> dict | None:
