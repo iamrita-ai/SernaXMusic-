@@ -48,7 +48,8 @@ def _help_keyboard() -> InlineKeyboardMarkup:
         url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
         style="success",
     )])
-    rows.append([InlineKeyboardButton("🆘 Support Chat", url=SUPPORT_CHAT, style="primary")])
+    if SUPPORT_CHAT:
+        rows.append([InlineKeyboardButton("🆘 Support Chat", url=SUPPORT_CHAT, style="primary")])
     return InlineKeyboardMarkup(rows)
 
 
