@@ -70,7 +70,14 @@ ETA_STICKER = os.environ.get("ETA_STICKER", "")
 # ---------------------------------------------------------------------
 # Misc
 # ---------------------------------------------------------------------
-SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "https://t.me/")
+_raw_support_chat = os.environ.get("SUPPORT_CHAT", "").strip()
+if not _raw_support_chat:
+    SUPPORT_CHAT = None  # button simply won't be shown
+elif _raw_support_chat.startswith("http://") or _raw_support_chat.startswith("https://"):
+    SUPPORT_CHAT = _raw_support_chat
+else:
+    # handles bare usernames ("mychat"), "@mychat", or invite hashes ("+abc123")
+    SUPPORT_CHAT = "https://t.me/" + _raw_support_chat.lstrip("@")
 DURATION_LIMIT_MIN = _int_env("DURATION_LIMIT_MIN", 60)
 DOWNLOADS_DIR = "downloads"
 

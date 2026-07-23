@@ -8,6 +8,7 @@ from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
+    ContextTypes,
 )
 
 from config import BOT_TOKEN, VC_ENABLED
@@ -48,6 +49,10 @@ async def _post_init(app: Application):
     log.info("SerenaXMusic is up and running ✅")
 
 
+async def _on_error(update, context: ContextTypes.DEFAULT_TYPE):
+    log.error("Unhandled exception while processing an update", exc_info=context.error)
+
+
 def build_app() -> Application:
     if not BOT_TOKEN:
         raise SystemExit(
@@ -84,6 +89,8 @@ def build_app() -> Application:
 
     # ---- in-bot secure STRING_SESSION generator (owner, DM only) ----
     app.add_handler(session_gen.build_conversation_handler())
+
+    app.add_error_handler(_on_error)
 
     return app
 
