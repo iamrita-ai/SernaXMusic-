@@ -1,3 +1,5 @@
+from html import escape as _esc
+
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
@@ -89,8 +91,8 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     idx = int(query.data.split("_", 1)[1])
     cat_name = list(HELP_CATEGORIES)[idx]
-    body = HELP_CATEGORIES[cat_name]
-    text = f"<b>{cat_name}</b>\n\n<pre>{body}</pre>"
+    body = _esc(HELP_CATEGORIES[cat_name])
+    text = f"<b>{_esc(cat_name)}</b>\n\n<pre>{body}</pre>"
     back_kb = InlineKeyboardMarkup(
         [[InlineKeyboardButton("« Back", callback_data="help_back", style="danger")]]
     )
